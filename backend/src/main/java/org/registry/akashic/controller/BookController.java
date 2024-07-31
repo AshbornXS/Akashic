@@ -16,8 +16,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +24,7 @@ import java.util.List;
 @RequestMapping("books")
 @Log4j2
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class BookController {
     private final BookService bookService;
 
@@ -41,22 +40,18 @@ public class BookController {
         return ResponseEntity.ok(bookService.listAllNonPageable());
     }
 
-    @GetMapping(path = "/{id}")
-    public ResponseEntity<Book> findById(@PathVariable long id) {
-        return ResponseEntity.ok(bookService.findByIdOrThrowBadRequestException(id));
+    @GetMapping(path = "/search")
+    public ResponseEntity<?> searchByIdOrName(@RequestParam(required = false) Long id, @RequestParam(required = false) String name) {
+        if (id != null) {
+            return ResponseEntity.ok(bookService.findByIdOrThrowBadRequestException(id));
+        } else if (name != null) {
+            return ResponseEntity.ok(bookService.findByNameContainingIgnoreCase(name));
+        } else {
+            return ResponseEntity.badRequest().body("Either 'id' or 'name' must be provided");
+        }
     }
 
-    @GetMapping(path = "by-id/{id}")
-    public ResponseEntity<Book> findByIdAuthenticationPrincipal(@PathVariable long id,
-                                                                @AuthenticationPrincipal UserDetails userDetails) {
-        log.info(userDetails);
-        return ResponseEntity.ok(bookService.findByIdOrThrowBadRequestException(id));
-    }
-
-    @GetMapping(path = "/find")
-    public ResponseEntity<List<Book>> findByName(@RequestParam String name) {
-        return ResponseEntity.ok(bookService.findByNameContainingIgnoreCase(name));
-    }
+    //**------------------- ADMIN AREA -------------------**//
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(path = "/admin")
