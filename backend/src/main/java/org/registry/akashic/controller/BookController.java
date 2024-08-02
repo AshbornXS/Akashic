@@ -3,6 +3,7 @@ package org.registry.akashic.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -41,25 +42,33 @@ public class BookController {
     }
 
     @GetMapping(path = "/search")
-    public ResponseEntity<?> searchByIdOrName(@RequestParam(required = false) Long id, @RequestParam(required = false) String name) {
+    public ResponseEntity<?> searchByIdOrName(@RequestParam(required = false) Long id, @RequestParam(required = false) String title) {
         if (id != null) {
             return ResponseEntity.ok(bookService.findByIdOrThrowBadRequestException(id));
-        } else if (name != null) {
-            return ResponseEntity.ok(bookService.findByNameContainingIgnoreCase(name));
+        } else if (title != null) {
+            return ResponseEntity.ok(bookService.findByTitleContainingIgnoreCase(title));
         } else {
-            return ResponseEntity.badRequest().body("Either 'id' or 'name' must be provided");
+            return ResponseEntity.badRequest().body("Either 'id' or 'title' must be provided");
         }
     }
 
     //**------------------- ADMIN AREA -------------------**//
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @RolesAllowed("ROLE_ADMIN")
     @PostMapping(path = "/admin")
     public ResponseEntity<Book> save(@RequestBody @Valid BookPostRequestBody bookPostRequestBody) {
+        log.warn(bookPostRequestBody);
         return new ResponseEntity<>(bookService.save(bookPostRequestBody), HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @RolesAllowed("ROLE_ADMIN")
+    @PutMapping(path = "/admin")
+    public ResponseEntity<Void> replace(@RequestBody BookPutRequestBody bookPutRequestBody) {
+        bookService.replace(bookPutRequestBody);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @RolesAllowed("ROLE_ADMIN")
     @DeleteMapping(path = "/admin/{id}")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Successful Operation"),
@@ -67,13 +76,6 @@ public class BookController {
     })
     public ResponseEntity<Void> delete(@PathVariable long id) {
         bookService.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping(path = "/admin")
-    public ResponseEntity<Void> replace(@RequestBody BookPutRequestBody bookPutRequestBody) {
-        bookService.replace(bookPutRequestBody);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

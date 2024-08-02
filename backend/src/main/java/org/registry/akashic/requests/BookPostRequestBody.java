@@ -1,5 +1,6 @@
 package org.registry.akashic.requests;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -12,13 +13,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BookPostRequestBody {
-    @NotEmpty(message = "The book name cannot be empty")
-    @Schema(description = "This is the books's name", example = "Lord of The Rings", required = true)
-    private String name;
+    @NotEmpty(message = "The book title cannot be empty")
+    @Schema(description = "This is the book's title", example = "Lord of The Rings", required = true)
+    @JsonProperty("title")
+    private String title;
 
     @NotEmpty(message = "The book author cannot be empty")
-    @Schema(description = "This is the books's author", example = "J.R.R. Tolkien", required = true)
+    @Schema(description = "This is the book's author", example = "J.R.R. Tolkien", required = true)
+    @JsonProperty("author")
     private String author;
-
-
 }

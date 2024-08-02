@@ -20,8 +20,8 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty(message = "The book name cannot be empty")
-    private String name;
+    @NotEmpty(message = "The book title cannot be empty")
+    private String title;
     @NotEmpty(message = "The book author cannot be empty")
     private String author;
 

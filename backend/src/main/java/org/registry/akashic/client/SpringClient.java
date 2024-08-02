@@ -34,7 +34,7 @@ public class SpringClient {
 //        Anime kingdomSaved = new RestTemplate().postForObject("http://localhost:8080/animes/", kingdom, Anime.class);
 //        log.info("Saved anime '{}'", kingdomSaved);
 
-        Book samuraiChamploo = Book.builder().name("Samurai Champloo").author("sla vei").build();
+        Book samuraiChamploo = Book.builder().title("Samurai Champloo").author("sla vei").build();
         ResponseEntity<Book> samuraiChamplooSaved = new RestTemplate().exchange("http://localhost:8081/books/",
                 HttpMethod.POST,
                 new HttpEntity<>(samuraiChamploo, httpJsonHeaders()),
@@ -43,7 +43,7 @@ public class SpringClient {
 
 
         Book bookToBeUpdate = samuraiChamplooSaved.getBody();
-        bookToBeUpdate.setName("Samurai Champloo 2");
+        bookToBeUpdate.setTitle("Samurai Champloo 2");
 
         ResponseEntity<Void> samuraiChamplooUpdate = new RestTemplate().exchange("http://localhost:8081/books/",
                 HttpMethod.PUT,

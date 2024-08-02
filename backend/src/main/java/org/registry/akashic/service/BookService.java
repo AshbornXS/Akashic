@@ -1,6 +1,7 @@
 package org.registry.akashic.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.registry.akashic.domain.Book;
 import org.registry.akashic.exception.BadRequestException;
 import org.registry.akashic.mapper.BookMapper;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@Log4j2
 @RequiredArgsConstructor
 public class BookService {
 
@@ -28,8 +30,8 @@ public class BookService {
         return bookRepository.findAll();
     }
 
-    public List<Book> findByNameContainingIgnoreCase(String name) {
-        return bookRepository.findByNameContainingIgnoreCase(name);
+    public List<Book> findByTitleContainingIgnoreCase(String title) {
+        return bookRepository.findByTitleContainingIgnoreCase(title);
     }
 
     public Book findByIdOrThrowBadRequestException(long id) {
@@ -39,11 +41,10 @@ public class BookService {
 
     @Transactional
     public Book save(BookPostRequestBody bookPostRequestBody) {
-        return bookRepository.save(BookMapper.INSTANCE.toBook(bookPostRequestBody));
-    }
-
-    public void delete(long id) {
-        bookRepository.delete(findByIdOrThrowBadRequestException(id));
+        log.warn(bookPostRequestBody);
+        Book book = BookMapper.INSTANCE.toBook(bookPostRequestBody);
+        log.warn(book);
+        return bookRepository.save(book);
     }
 
     public void replace(BookPutRequestBody bookPutRequestBody) {
@@ -51,6 +52,10 @@ public class BookService {
         Book book = BookMapper.INSTANCE.toBook(bookPutRequestBody);
         book.setId(savedBook.getId());
         bookRepository.save(book);
+    }
+
+    public void delete(long id) {
+        bookRepository.delete(findByIdOrThrowBadRequestException(id));
     }
 
 }
