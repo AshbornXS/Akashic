@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Livros</title>
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+    <div id="app">
+        <h1>Lista de Livros</h1>
+        <button id="fetch-all-books">Todos os Livros</button>
+        <button id="fetch-pageable-books">Livros Paginados</button>
+        
+        <div id="search-section">
+            <input type="text" id="search-id" placeholder="Buscar por ID">
+            <button id="search-by-id">Buscar</button>
+            <input type="text" id="search-title" placeholder="Buscar por Título">
+            <button id="search-by-title">Buscar</button>
+        </div>
+        
+        <div id="book-list" class="book-list"></div>
+
+        <div id="pagination-controls">
+            <button id="prev-page"><-</button>
+            <span id="page-info">Página 1</span>
+            <button id="next-page">-></button>
+        </div>
+
+        <a href="/admin/admin.html">Administração</a>
+        <a href="./auth/login.html">Login</a>
+
+        <button id="logout">Logout</button>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

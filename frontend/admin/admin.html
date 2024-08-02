@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Administração</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <div id="admin-app">
+        <h1>Painel de Administração</h1>
+
+        <div id="admin-section">
+            <h2>Administração de Livros</h2>
+
+            <h3>Adicionar Livro</h3>
+            <input type="text" id="add-title" placeholder="Título">
+            <input type="text" id="add-author" placeholder="Autor">
+            <button id="add-book">Adicionar</button>
+            
+            <h3>Editar Livro</h3>
+            <input type="text" id="edit-id" placeholder="ID">
+            <input type="text" id="edit-title" placeholder="Novo Título">
+            <input type="text" id="edit-author" placeholder="Novo Autor">
+            <button id="edit-book">Editar</button>
+            
+            <h3>Apagar Livro</h3>
+            <input type="text" id="delete-id" placeholder="ID">
+            <button id="delete-book">Apagar</button>
+        </div>
+    </div>
+    <script src="admin.js"></script>
+</body>
+</html>
