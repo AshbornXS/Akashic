@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Inicial - Livros</title>
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Livros Disponíveis</h1>
+        <nav>
+            <a href="./auth/login.html">Login</a>
+            <a href="./auth/register.html">Registrar</a>
+            <a id="admin-section" href="./admin/admin.html">Admin</a>
+            <a id="profile" href="./profile/profile.html">Perfil</a>
+            <button id="logoutButton">Logout</button>
+        </nav>
+    </header>
+    
+    <main>
+        <div class="search-bar">
+            <input type="text" id="search-input" placeholder="Buscar por ID ou Título">
+            <button id="search-button">Buscar</button>
+        </div>
+        
+        <div id="books-container" class="book-list"></div>
+
+        <div id="pagination-controls">
+            <button id="prev-page"><-</button>
+            <span id="page-info">Página 1</span>
+            <button id="next-page">-></button>
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
