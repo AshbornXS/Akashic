@@ -1,16 +1,24 @@
+const token = localStorage.getItem('token');
+
+const adminSection = document.getElementById('admin-section');
+const loginButton = document.getElementById('login');
+const registerButton = document.getElementById('register');
+const logoutButton = document.getElementById('logout');
+const profile = document.getElementById('profile');
+
+const prevPageButton = document.getElementById('prev-page');
+const nextPageButton = document.getElementById('next-page');
+const pageInfo = document.getElementById('page-info');
+const booksContainer = document.getElementById('books-container');
+const searchButton = document.getElementById('search-button');
+const paginationControls = document.getElementById('pagination-controls');
+
+let currentPage = 0;
+let totalPages = 1;
+
+const apiUrl = 'http://localhost:8081/books';
+
 document.addEventListener('DOMContentLoaded', function () {
-    const prevPageButton = document.getElementById('prev-page');
-    const nextPageButton = document.getElementById('next-page');
-    const pageInfo = document.getElementById('page-info');
-    const booksContainer = document.getElementById('books-container');
-    const searchButton = document.getElementById('search-button');
-    const paginationControls = document.getElementById('pagination-controls');
-
-    let currentPage = 0;
-    let totalPages = 1;
-
-    const apiUrl = 'http://localhost:8081/books';
-
     prevPageButton.addEventListener('click', () => fetchPageableBooks(currentPage - 1));
     nextPageButton.addEventListener('click', () => fetchPageableBooks(currentPage + 1));
     searchButton.addEventListener('click', searchBookByTitle);
@@ -43,31 +51,22 @@ document.addEventListener('DOMContentLoaded', function () {
     function displayBooks(books) {
         booksContainer.innerHTML = '';
         books.forEach(book => {
-            const bookElement = document.createElement('div');
-            bookElement.className = 'book-item';
-
-            const imageElement = document.createElement('img');
-            imageElement.src = `data:image/jpeg;base64,${book.imageData}`;
-            imageElement.alt = `Cover of ${book.title}`;
-
-            const detailsElement = document.createElement('div');
-            detailsElement.className = 'book-details';
-
-            const titleElement = document.createElement('h3');
-            titleElement.textContent = book.title;
-
-            const authorElement = document.createElement('p');
-            authorElement.textContent = `Author: ${book.author}`;
-
-            detailsElement.appendChild(titleElement);
-            detailsElement.appendChild(authorElement);
-
-            bookElement.appendChild(imageElement);
-            bookElement.appendChild(detailsElement);
-
-            booksContainer.appendChild(bookElement);
+            const bookItem = document.createElement('div');
+            bookItem.className = 'book-item';
+            bookItem.innerHTML = `
+                <img src="data:image/jpeg;base64,${book.imageData}" alt="${book.title}">
+                <div class="book-details">
+                    <h3>${book.title}</h3>
+                    <p>Autor: ${book.author}</p>
+                </div>
+            `;
+            bookItem.addEventListener('click', () => {
+                window.location.href = `/books/details.html?id=${book.id}`;
+            });
+            booksContainer.appendChild(bookItem);
         });
     }
+    
 
     function handleError(error) {
         console.error('Erro ao buscar a lista de livros:', error);
@@ -84,18 +83,14 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    //**------------------ Admin Painel ---------------------**/
-
     // Chama a função fetchPageableBooks ao carregar a página
     fetchPageableBooks(currentPage);
 });
 
-const adminSection = document.getElementById('admin-section');
-
 fetch('http://localhost:8081/auth/me', {
     method: 'GET',
     headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
+        'Authorization': `Bearer ${token}`
     }
 })
 .then(response => response.json())
@@ -111,18 +106,17 @@ fetch('http://localhost:8081/auth/me', {
     adminSection.style.display = 'none';
 });
 
-const logoutButton = document.getElementById('logoutButton');
-const profile = document.getElementById('profile');
-
-if (localStorage.getItem('token')) {
+if (token) {
     logoutButton.style.display = 'block';
+    loginButton.style.display = 'none';
+    registerButton.style.display = 'none';
 } else {
     logoutButton.style.display = 'none';
     profile.style.display = 'none';
 }
 
 logoutButton.addEventListener('click', function () {
-    if (localStorage.getItem('token')) {
+    if (token) {
         localStorage.removeItem('token');
         window.location.href = 'index.html';
     }

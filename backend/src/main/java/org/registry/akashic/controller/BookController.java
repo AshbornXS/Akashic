@@ -8,6 +8,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.registry.akashic.domain.Book;
+import org.registry.akashic.mapper.BookMapper;
+import org.registry.akashic.requests.BookGetResponse;
 import org.registry.akashic.requests.BookPostRequestBody;
 import org.registry.akashic.requests.BookPutRequestBody;
 import org.registry.akashic.service.BookService;
@@ -34,8 +36,15 @@ public class BookController {
     @GetMapping
     @Operation(summary = "List all books paginated", description = "The default size is 20, use the parameter size " +
             "to change the default value", tags = {"book"} )
-    public ResponseEntity<Page<Book>> list(@ParameterObject Pageable pageable) {
-        return ResponseEntity.ok(bookService.listAll(pageable));
+    public ResponseEntity<Page<BookGetResponse>> list(@ParameterObject Pageable pageable) {
+        Page<Book> books = bookService.listAll(pageable);
+        Page<BookGetResponse> bookGetResponse = BookMapper.INSTANCE.toBookGetResponsePage(books);
+        return ResponseEntity.ok(bookGetResponse);
+    }
+
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<Book> details(@PathVariable long id) {
+        return ResponseEntity.ok(bookService.findByIdOrThrowBadRequestException(id));
     }
 
     @GetMapping(path = "/all")

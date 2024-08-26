@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Livro</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Detalhes do Livro</h1>
+        <nav>
+            <a id="login" href="../auth/login.html">Login</a>
+            <a id="register" href="../auth/register.html">Registrar</a>
+            <a id="admin-section" href="../admin/admin.html">Admin</a>
+            <a id="profile" href="../profile/profile.html">Perfil</a>
+            <button id="logout">Logout</button>
+        </nav>
+    </header>
+    
+    <main>
+        <div id="book-details"></div>
+        <button class="back-button" onclick="window.history.back()">Voltar</button>
+    </main>
+    
+    <footer>
+        <p>&copy; 2023 Livraria Online</p>
+    </footer>
+    
+    <script src="../books/details.js"></script>
+</body>
+</html>

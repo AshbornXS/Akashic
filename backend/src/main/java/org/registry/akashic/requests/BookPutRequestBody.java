@@ -25,6 +25,11 @@ public class BookPutRequestBody {
     @JsonProperty("author")
     private String author;
 
+    @NotEmpty(message = "The book description cannot be empty")
+    @Schema(description = "This is the book's description", example = "The Lord of the Rings is an epic high-fantasy novel written by English author and scholar J. R. R. Tolkien.", required = true)
+    @JsonProperty("description")
+    private String description;
+
     @Schema(description = "This is the book's cover", required = true)
     @Lob
     @JsonProperty("imageData")

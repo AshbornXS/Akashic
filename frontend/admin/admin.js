@@ -25,13 +25,15 @@ function makeAuthenticatedRequest(url, options = {}) {
 function addBook() {
     const title = document.getElementById('add-title').value;
     const author = document.getElementById('add-author').value;
+    const description = document.getElementById('add-desc').value;
     const image = document.getElementById('add-image').files[0];
 
-    if (title && author && image) {
+    if (title && author && image && description) {
         const formData = new FormData();
         const bookPostRequestBody = {
             title: title,
             author: author,
+            description: description,
             imageData: "",
             imageName: image.name
         };
@@ -53,8 +55,6 @@ function addBook() {
                 }
             })
             .catch(error => console.error('Erro ao adicionar o livro:', error));
-    } else {
-        alert('Por favor, forneça todos os dados do livro e a imagem');
     }
 }
 
@@ -62,7 +62,7 @@ function editBook() {
     const id = document.getElementById('edit-id').value;
     const title = document.getElementById('edit-title').value;
     const author = document.getElementById('edit-author').value;
-    
+
     if (id && title && author) {
         makeAuthenticatedRequest(`${apiUrl}/admin`, {
             method: 'PUT',
@@ -81,27 +81,23 @@ function editBook() {
                 }
             })
             .catch(error => console.error('Erro ao editar o livro:', error));
-    } else {
-        alert('Por favor, forneça todos os dados do livro');
     }
 }
 
-    function deleteBook() {
-        const id = document.getElementById('delete-id').value;
-        if (id) {
-            makeAuthenticatedRequest(`${apiUrl}/admin/${id}`, {
-                method: 'DELETE',
-            })
-                .then(response => {
-                    if (response.ok) {
-                        console.log('Livro apagado com sucesso');
-                    } else {
-                        console.error('Erro ao apagar o livro:', response.statusText);
+function deleteBook() {
+    const id = document.getElementById('delete-id').value;
+    if (id) {
+        makeAuthenticatedRequest(`${apiUrl}/admin/${id}`, {
+            method: 'DELETE',
+        })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Livro apagado com sucesso');
+                } else {
+                    console.error('Erro ao apagar o livro:', response.statusText);
                 }
             })
-                .catch(error => console.error('Erro ao apagar o livro:', error));
-        } else {
-            alert('Por favor, preencha todos os campos');
-        }
+            .catch(error => console.error('Erro ao apagar o livro:', error));
+    }
 
 }

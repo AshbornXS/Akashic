@@ -2,6 +2,7 @@ package org.registry.akashic.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,6 +22,10 @@ public class Book {
     private String title;
     @NotEmpty(message = "The book author cannot be empty")
     private String author;
+    @NotEmpty(message = "The book description cannot be empty")
+    @Size(max = 1000, message = "The book description must be less than 1000 characters")
+    private String description;
+
     @Lob
     @Column(name = "image_data", columnDefinition = "LONGBLOB")
     private byte[] imageData;

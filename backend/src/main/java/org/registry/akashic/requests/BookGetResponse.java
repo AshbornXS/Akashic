@@ -13,7 +13,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class BookPostRequestBody {
+public class BookGetResponse {
+    @NotEmpty(message = "The book ID cannot be empty")
+    @Schema(description = "This is the book's ID", example = "1", required = true)
+    @JsonProperty("id")
+    private Long id;
+
     @NotEmpty(message = "The book title cannot be empty")
     @Schema(description = "This is the book's title", example = "Lord of The Rings", required = true)
     @JsonProperty("title")
@@ -24,11 +29,6 @@ public class BookPostRequestBody {
     @JsonProperty("author")
     private String author;
 
-    @NotEmpty(message = "The book description cannot be empty")
-    @Schema(description = "This is the book's description", example = "The Lord of the Rings is an epic high-fantasy novel written by English author and scholar J. R. R. Tolkien.", required = true)
-    @JsonProperty("description")
-    private String description;
-
     @Schema(description = "This is the book's cover", required = true)
     @Lob
     @JsonProperty("imageData")
@@ -37,5 +37,4 @@ public class BookPostRequestBody {
     @Schema(description = "This is the book's cover file name", required = true)
     @JsonProperty("imageName")
     private String imageName;
-
 }
