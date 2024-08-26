@@ -44,12 +44,4 @@ public class ImageUtil {
         }
         return outputStream.toByteArray();
     }
-
-    public static void saveImageToFile(byte[] imageData, String fileName) throws IOException {
-        File file = new File("images/" + fileName);
-        file.getParentFile().mkdirs();
-        try (FileOutputStream fos = new FileOutputStream(file)) {
-            fos.write(imageData);
-        }
-    }
 }
