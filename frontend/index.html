@@ -21,7 +21,12 @@
     <main>
         <div class="search-bar">
             <input type="text" id="search-input" placeholder="Buscar por ID ou Título">
-            <button id="search-button">Buscar</button>
+            <select id="tag-filter" title="Filtrar">
+                <option value="">Filtrar...</option>
+            </select>
+            <select id="order-by" title="Ordenar">
+                <option value="sort=title,asc">Titulo (A-Z)</option>
+            </select>
         </div>
         
         <div id="books-container" class="book-list"></div>

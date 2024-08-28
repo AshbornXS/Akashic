@@ -30,6 +30,10 @@ public class BookPutRequestBody {
     @JsonProperty("description")
     private String description;
 
+    @Schema(description = "This is the book's tags", example = "romance, ficção", required = true)
+    @JsonProperty("tags")
+    private String tags;
+
     @Schema(description = "This is the book's cover", required = true)
     @Lob
     @JsonProperty("imageData")

@@ -6,7 +6,7 @@ const registerButton = document.getElementById('register');
 const logoutButton = document.getElementById('logout');
 const profile = document.getElementById('profile');
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const bookId = getBookIdFromUrl();
     if (bookId) {
         fetchBookDetails(bookId);
@@ -32,11 +32,25 @@ document.addEventListener('DOMContentLoaded', function() {
     function displayBookDetails(book) {
         const bookDetailsDiv = document.getElementById('book-details');
         bookDetailsDiv.innerHTML = `
+            <img src="data:image/jpeg;base64,${book.imageData}" alt="${book.title}">
             <h1>${book.title}</h1>
             <p>Autor: ${book.author}</p>
             <p>Descrição: ${book.description}</p>
-            <img src="data:image/jpeg;base64,${book.imageData}" alt="${book.title}">
         `;
+
+        // Processar e exibir as tags em cards
+        const tagsContainer = document.createElement('div');
+        tagsContainer.classList.add('tags-container');
+
+        const tags = book.tags.split(',');
+        tags.forEach(tag => {
+            const tagCard = document.createElement('div');
+            tagCard.classList.add('tag-card');
+            tagCard.textContent = tag.trim();
+            tagsContainer.appendChild(tagCard);
+        });
+
+        bookDetailsDiv.appendChild(tagsContainer);
     }
 });
 
@@ -46,18 +60,18 @@ fetch('http://localhost:8081/auth/me', {
         'Authorization': `Bearer ${token}`
     }
 })
-.then(response => response.json())
-.then(data => {
-    if (data.role === 'ROLE_ADMIN') {
-        adminSection.style.display = 'block';
-    } else {
+    .then(response => response.json())
+    .then(data => {
+        if (data.role === 'ROLE_ADMIN') {
+            adminSection.style.display = 'block';
+        } else {
+            adminSection.style.display = 'none';
+        }
+    })
+    .catch(error => {
+        console.error('Erro ao verificar o papel do usuário:', error);
         adminSection.style.display = 'none';
-    }
-})
-.catch(error => {
-    console.error('Erro ao verificar o papel do usuário:', error);
-    adminSection.style.display = 'none';
-});
+    });
 
 if (token) {
     logoutButton.style.display = 'block';

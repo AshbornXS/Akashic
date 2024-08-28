@@ -29,6 +29,10 @@ public class BookGetResponse {
     @JsonProperty("author")
     private String author;
 
+    @Schema(description = "This is the book's tags", example = "romance, ficção", required = true)
+    @JsonProperty("tags")
+    private String tags;
+
     @Schema(description = "This is the book's cover", required = true)
     @Lob
     @JsonProperty("imageData")

@@ -26,6 +26,8 @@ public class Book {
     @Size(max = 1000, message = "The book description must be less than 1000 characters")
     private String description;
 
+    private String tags;
+
     @Lob
     @Column(name = "image_data", columnDefinition = "LONGBLOB")
     private byte[] imageData;

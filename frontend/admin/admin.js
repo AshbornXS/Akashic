@@ -4,9 +4,19 @@ const deleteBookButton = document.getElementById('delete-book');
 
 const apiUrl = 'http://localhost:8081/books';
 
-addBookButton.addEventListener('click', addBook);
-editBookButton.addEventListener('click', editBook);
-deleteBookButton.addEventListener('click', deleteBook);
+addBookButton.addEventListener('submit', function(event) {
+    event.preventDefault();
+    addBook();
+});
+editBookButton.addEventListener('submit', function(event) {
+    event.preventDefault();
+    editBook();
+});
+deleteBookButton.addEventListener('submit', function(event) {
+    event.preventDefault();
+    deleteBook();
+});
+
 
 function makeAuthenticatedRequest(url, options = {}) {
     const token = localStorage.getItem('token');
@@ -48,6 +58,7 @@ function addBook() {
             .then(response => {
                 if (response.ok) {
                     console.log('Livro adicionado com sucesso');
+                    cleanFields();
                 } else {
                     return response.json().then(data => {
                         throw new Error(data.message || 'Erro ao adicionar o livro');
@@ -74,6 +85,7 @@ function editBook() {
             .then(response => {
                 if (response.ok) {
                     console.log('Livro editado com sucesso');
+                    cleanFields();
                 } else {
                     return response.json().then(data => {
                         throw new Error(data.message || 'Erro ao editar o livro');
@@ -93,11 +105,16 @@ function deleteBook() {
             .then(response => {
                 if (response.ok) {
                     console.log('Livro apagado com sucesso');
+                    cleanFields();
                 } else {
                     console.error('Erro ao apagar o livro:', response.statusText);
                 }
             })
             .catch(error => console.error('Erro ao apagar o livro:', error));
     }
+}
 
+function cleanFields() {
+    const fields = document.querySelectorAll('input');
+    fields.forEach(field => field.value = '');
 }
