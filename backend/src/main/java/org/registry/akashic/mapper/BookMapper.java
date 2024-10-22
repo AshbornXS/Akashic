@@ -39,6 +39,7 @@ public interface BookMapper {
     @Mapping(source = "imageName", target = "imageName")
     BookGetResponse toBookGetResponse(Book book);
 
+
     @Mapping(source = "id", target = "id")
     @Mapping(source = "title", target = "title")
     @Mapping(source = "author", target = "author")

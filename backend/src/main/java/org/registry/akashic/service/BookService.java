@@ -56,6 +56,11 @@ public class BookService {
 
     public String findAllTags() {
         List<String> tagsList = bookRepository.findAllTags();
+
+        if (tagsList.isEmpty()) {
+            return "";
+        }
+
         Set<String> uniqueTags = new HashSet<>();
         for (String tags : tagsList) {
             String[] splitTags = tags.split(",");
@@ -63,7 +68,7 @@ public class BookService {
                 uniqueTags.add(tag.trim());
             }
         }
-        return uniqueTags.stream().collect(Collectors.joining(", "));
+        return String.join(", ", uniqueTags);
     }
 
     @Transactional
@@ -80,12 +85,25 @@ public class BookService {
         return bookRepository.save(book);
     }
 
-    public void replace(BookPutRequestBody bookPutRequestBody) {
-        Book savedBook = bookRepository.findById(bookPutRequestBody.getId())
-                .orElseThrow(() -> new BadRequestException("Book not Found"));
+    public Book replace(BookPutRequestBody bookPutRequestBody, MultipartFile imageFile) throws IOException {
+        if (bookPutRequestBody.getId() == null) {
+            throw new BadRequestException("Book ID cannot be null");
+        }
+
+        if (bookRepository.findById(bookPutRequestBody.getId()).isEmpty()) {
+            throw new BadRequestException("Book not Found");
+        }
+
         Book book = BookMapper.INSTANCE.toBook(bookPutRequestBody);
-        book.setId(savedBook.getId());
-        bookRepository.save(book);
+        log.warn("Updated Book: {}", book);
+        log.warn("Book Put Request Body: {}", bookPutRequestBody);
+        if (imageFile != null && !imageFile.isEmpty()) {
+            byte[] compressedImage = ImageUtil.compressImage(imageFile.getBytes());
+            String imageName = book.getTitle().replaceAll("\\s+", "_") + ".jpg";
+            book.setImageData(compressedImage);
+            book.setImageName(imageName);
+        }
+        return bookRepository.save(book);
     }
 
     public void delete(long id) {

@@ -89,9 +89,9 @@ public class BookController {
 
     @RolesAllowed("ROLE_ADMIN")
     @PutMapping(path = "/admin")
-    public ResponseEntity<Void> replace(@RequestBody BookPutRequestBody bookPutRequestBody) {
-        bookService.replace(bookPutRequestBody);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<Book> replace(@RequestPart("book") @Valid BookPutRequestBody bookPutRequestBody, @RequestPart("image") MultipartFile imageFile) throws IOException {
+        Book replacedBook = bookService.replace(bookPutRequestBody, imageFile);
+        return new ResponseEntity<>(replacedBook ,HttpStatus.NO_CONTENT);
     }
 
     @RolesAllowed("ROLE_ADMIN")
