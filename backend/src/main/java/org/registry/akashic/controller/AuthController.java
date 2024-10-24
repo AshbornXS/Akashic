@@ -37,7 +37,9 @@ public class AuthController {
 
         var user = (User) authenticate.getPrincipal();
 
-        return tokenService.genToken(user);
+        var token = tokenService.genToken(user);
+
+        return token + ", " + user.getId() + ", " + user.getUsername();
     }
 
     @PostMapping("/register")

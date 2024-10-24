@@ -25,16 +25,16 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.headers().frameOptions().disable();
         return http.csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/books/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/h2-console/**").permitAll()
                         .anyRequest().permitAll())
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
                 .build();
-
-
     }
 
     @Bean

@@ -15,9 +15,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 body: JSON.stringify({ username, password })
             })
             .then(response => response.text())
-            .then(token => {
-                if (token) {
+            .then(data => {
+                const [token, userId, username] = data.split(', ');
+
+                if (token && userId && username) {
                     localStorage.setItem('token', token);
+                    localStorage.setItem('userId', userId);
+                    localStorage.setItem('username', username);
                     window.location.href = 'http://localhost:5500/';
                 } else {
                     alert('Login failed!');
@@ -62,9 +66,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             })
             .then(response => response.text())
-            .then(token => {
-                if (token) {
+            .then(data => {
+                const [token, userId, username] = data.split(', ');
+                
+                if (token && userId && username) {
                     localStorage.setItem('token', token);
+                    localStorage.setItem('userId', userId);
+                    localStorage.setItem('username', username);
                     window.location.href = 'http://localhost:5500/';
                 } else {
                     alert('Login after registration failed!');

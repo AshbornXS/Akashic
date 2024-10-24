@@ -20,6 +20,34 @@
     
     <main>
         <div id="book-details"></div>
+        <form id="review-form">
+            <label for="rating">Avaliação:</label>
+            <div class="star-rating">
+                <span class="star" data-value="1">&#9733;</span>
+                <span class="star" data-value="2">&#9733;</span>
+                <span class="star" data-value="3">&#9733;</span>
+                <span class="star" data-value="4">&#9733;</span>
+                <span class="star" data-value="5">&#9733;</span>
+            </div>
+            <label for="comment">Comentário:</label>
+            <textarea id="comment" name="comment" required></textarea>
+            <button type="submit">Enviar Review</button>
+        </form>
+        <div class="filter-container">
+            <select id="sort-reviews">
+                <option value="date">Ordenar por Data</option>
+                <option value="rating">Ordenar por Avaliação</option>
+            </select>
+            <select id="filter-reviews">
+                <option value="">Filtrar por Avaliação</option>
+                <option value="5">5 Estrelas</option>
+                <option value="4">4 Estrelas</option>
+                <option value="3">3 Estrelas</option>
+                <option value="2">2 Estrelas</option>
+                <option value="1">1 Estrela</option>
+            </select>
+        </div>
+        <div id="reviews-container"></div>
         <button class="back-button" onclick="window.history.back()">Voltar</button>
     </main>
     

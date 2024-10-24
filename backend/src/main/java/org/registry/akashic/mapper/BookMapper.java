@@ -9,8 +9,6 @@ import org.registry.akashic.requests.BookPostRequestBody;
 import org.registry.akashic.requests.BookPutRequestBody;
 import org.springframework.data.domain.Page;
 
-import java.util.List;
-
 @Mapper
 public interface BookMapper {
     BookMapper INSTANCE = Mappers.getMapper(BookMapper.class);
