@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Login</h1>
+    </header>
+    
+    <main>
+        <form id="loginForm" class="form">
+            <label for="username">Email:</label>
+            <input type="text" id="username" name="username" required>
+            
+            <label for="password">Senha:</label>
+            <input type="password" id="password" name="password" required>
+            
+            <button type="submit" id="login">Login</button>
+        </form>
+        <button class="back-button" onclick="window.history.back()">Voltar</button>
+    </main>
+    <script src="auth.js"></script>
+</body>
+</html>
