@@ -1,5 +1,6 @@
+const token = localStorage.getItem('token');
+
 document.addEventListener('DOMContentLoaded', async () => {
-    const token = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
 
     if (!token) {
@@ -8,7 +9,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
 
-    console.log('Tentando buscar informações do usuário...');
+    let originalUserData = {};
 
     try {
         const response = await fetch('http://localhost:8081/auth/me', {
@@ -20,6 +21,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (response.ok) {
             const userData = await response.json();
+            originalUserData = { ...userData }; // Salva os dados originais
+
             document.getElementById('name').textContent = userData.name;
             document.getElementById('username').textContent = userData.username;
 
@@ -29,7 +32,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (userData.profilePic) {
                 document.getElementById('profile-picture-display').src = `data:image/jpeg;base64,${userData.profilePic}`;
             } else {
-                console.warn('Foto de perfil não encontrada.');
                 document.getElementById('profile-picture-display').src = '../images/default-profile.png';
             }
 
@@ -49,6 +51,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('update-profile-form').style.display = 'block';
         document.getElementById('profile-picture-instruction').style.display = 'block';
         document.getElementById('favorite-books').style.display = 'none';
+        document.getElementById('back-button').style.display = 'none';
     });
 
     document.getElementById('profile-picture-display').addEventListener('click', () => {
@@ -67,10 +70,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     document.getElementById('cancel-update-button').addEventListener('click', () => {
+        // Restaura os dados originais
+        document.getElementById('name-input').value = originalUserData.name;
+        document.getElementById('username-input').value = originalUserData.username;
+        document.getElementById('password-input').value = '';
+
         document.getElementById('user-details').style.display = 'block';
         document.getElementById('edit-profile-button').style.display = 'block';
         document.getElementById('update-profile-form').style.display = 'none';
         document.getElementById('profile-picture-instruction').style.display = 'none';
+        document.getElementById('favorite-books').style.display = 'block';
     });
 
     document.getElementById('update-profile-form').addEventListener('submit', async (event) => {
@@ -89,6 +98,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         if (file) {
             formData.append('profilePicture', file);
+        } else {
+            // Adiciona a foto de perfil atual se nenhuma nova foto for selecionada
+            const currentProfilePic = document.getElementById('profile-picture-display').src;
+            const response = await fetch(currentProfilePic);
+            const blob = await response.blob();
+            formData.append('profilePicture', blob, 'currentProfilePic.jpg');
         }
 
         try {
@@ -102,7 +117,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             if (response.ok) {
                 alert('Informações atualizadas com sucesso!');
-                if (password) {
+                if (password || username !== originalUserData.username) {
                     localStorage.removeItem('token');
                     localStorage.removeItem('userId');
                     localStorage.removeItem('username');
@@ -114,17 +129,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                     if (updatedUserData.profilePic) {
                         document.getElementById('profile-picture-display').src = `data:image/jpeg;base64,${updatedUserData.profilePic}`;
                     } else {
-                        console.warn('Foto de perfil não encontrada após atualização.');
                         document.getElementById('profile-picture-display').src = '../images/default-profile.png';
                     }
-
-                    document.getElementById('name-input').value = updatedUserData.name;
-                    document.getElementById('username-input').value = updatedUserData.username;
 
                     document.getElementById('user-details').style.display = 'block';
                     document.getElementById('edit-profile-button').style.display = 'block';
                     document.getElementById('update-profile-form').style.display = 'none';
                     document.getElementById('profile-picture-instruction').style.display = 'none';
+                    document.getElementById('favorite-books').style.display = 'block';
                 }
             } else {
                 const errorData = await response.json();

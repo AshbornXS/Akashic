@@ -23,7 +23,11 @@ const apiUrl = 'http://localhost:8081/books';
 document.addEventListener('DOMContentLoaded', function () {
     prevPageButton.addEventListener('click', () => fetchPageableBooks(currentPage - 1));
     nextPageButton.addEventListener('click', () => fetchPageableBooks(currentPage + 1));
-    searchInput.addEventListener('input', debounce(searchBookByTitle, 300));
+
+    const searchInput = document.getElementById('search-input');
+    searchInput.addEventListener('input', debounce(function () {
+        searchBookByTitle();
+    }, 300));
 
     tagFilter.addEventListener('change', function () {
         const selectedTag = tagFilter.value;
@@ -39,30 +43,74 @@ document.addEventListener('DOMContentLoaded', function () {
         fetchPageableBooks(0, selectedOrder);
     });
 
-    async function fetchPageableBooks(page, orderBy = '') {
+    async function fetchPageableBooks(page, selectedOrder = 'sort=title,asc') {
         try {
-            const response = await fetch(`${apiUrl}?page=${page}&${orderBy}`);
+            const response = await fetch(`${apiUrl}?page=${page}&${selectedOrder}`);
             const data = await response.json();
             const books = data.content || [];
-    
-            // Verificar se os livros são favoritos
-            const userResponse = await fetch('http://localhost:8081/auth/me', {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`
+            const bookIds = books.map(book => book.id);
+
+            if (token) {
+                const userResponse = await fetch('http://localhost:8081/auth/me', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                const userData = await userResponse.json();
+                const favoriteBookIds = userData.fav || [];
+
+                for (const favId of favoriteBookIds) {
+                    if (!bookIds.includes(favId)) {
+                        try {
+                            await fetch(`http://localhost:8081/auth/fav/${favId}`, {
+                                method: 'DELETE',
+                                headers: {
+                                    'Authorization': `Bearer ${token}`
+                                }
+                            });
+                            favoriteBookIds.splice(favoriteBookIds.indexOf(favId), 1);
+                        }
+                        catch (error) {
+                            console.error('Erro ao remover favorito:', error);
+                        }
+                    }
                 }
-            });
-            const userData = await userResponse.json();
-            const favoriteBookIds = userData.fav || [];
-    
-            books.forEach(book => {
-                book.isFavorite = favoriteBookIds.includes(book.id);
-            });
-    
+
+                books.forEach(book => {
+                    book.isFavorite = favoriteBookIds.includes(book.id);
+                });
+            }
+
             displayBooks(books);
+            updatePaginationControls();
         } catch (error) {
             handleError(error);
         }
+    }
+
+    function fetchBooksByTag(tag) {
+        fetch(`${apiUrl}/filter?tags=${tag}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data && data.content) {
+                    currentPage = data.number;
+                    totalPages = data.totalPages;
+                    displayBooks(data.content);
+                    updatePaginationControls();
+                } else {
+                    handleError(new Error('Dados inválidos retornados pela API'));
+                }
+            })
+            .catch(error => handleError(error));
+    }
+
+    function debounce(func, wait) {
+        let timeout;
+        return function (...args) {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(this, args), wait);
+        };
     }
 
     function searchBookByTitle() {
@@ -87,38 +135,56 @@ document.addEventListener('DOMContentLoaded', function () {
             booksContainer.innerHTML = '<p>Nenhum livro encontrado.</p>';
             return;
         }
-    
-        books.sort((a, b) => a.title.localeCompare(b.title));
+
         booksContainer.innerHTML = '';
-    
+
         for (const book of books) {
             const bookItem = document.createElement('div');
-            bookItem.className = 'book-item';
-    
-            const averageRating = await fetchAverageRating(book.id);
-            const starRatingElement = createStarRating(averageRating);
-    
+            bookItem.className = 'container';
+
+            const { average, count } = await fetchAverageRating(book.id);
+            const starRatingElement = createStarRating(average, count);
+
+            if (book.description.length > 50) {
+                book.description = book.description.substring(0, 50) + '...';
+            }
+
             bookItem.innerHTML = `
-                <img src="data:image/jpeg;base64,${book.imageData}" alt="${book.title}">
-                <div class="book-details">
-                    <h3>${book.title}</h3>
-                    <p>Autor: ${book.author}</p>
-                    <span class="favorite-icon" data-book-id="${book.id}" data-favorite="${book.isFavorite}" style="font-size: 24px; cursor: pointer;">
-                        ${book.isFavorite ? '&#9829;' : '&#9825;'}
-                    </span>
+            <div class="card">
+                <div class="img">
+                    <img src="data:image/jpeg;base64,${book.imageData}" alt="${book.title}" />
+                    <div class="img-title">${book.title}</div>
                 </div>
+
+                <div class="content">
+                    <span class="title">${book.title}</span>
+                    <p class="desc">${book.description}</p>
+
+                    <!-- Ícone de Favorito -->
+                    <div id="favorite-container" style="text-align: center; margin-top: 10px;">
+                        <span id="favorite-icon" class="heart" data-book-id="${book.id}" data-favorite="${book.isFavorite}" style="font-size: 24px; cursor: pointer;">
+                            ${book.isFavorite ? '&#9829;' : '&#9825;'}
+                        </span>
+                    </div>
+
+                    <!-- Estrelas de Avaliação (média) -->
+                    <div class="star-rating">
+                        ${starRatingElement.outerHTML}
+                </div>
+                <div class="arrow">
+                    <span>&#8673;</span>
+                </div>
+            </div>
             `;
-            bookItem.querySelector('.book-details').appendChild(starRatingElement);
             bookItem.addEventListener('click', () => {
-                window.location.href = `/books/details.html?id=${book.id}`;
+                window.location.href = `/pages/books/details.html?id=${book.id}`;
             });
             booksContainer.appendChild(bookItem);
         }
-    
-        // Adicionar evento de clique para os ícones de favorito
-        document.querySelectorAll('.favorite-icon').forEach(icon => {
+
+        document.querySelectorAll('#favorite-icon').forEach(icon => {
             icon.addEventListener('click', async function (event) {
-                event.stopPropagation(); // Evitar que o clique no ícone redirecione para a página de detalhes
+                event.stopPropagation();
                 const bookId = this.dataset.bookId;
                 const isFavorite = this.dataset.favorite === 'true';
                 const method = isFavorite ? 'DELETE' : 'POST';
@@ -147,33 +213,33 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     }
-    
+
     async function fetchAverageRating(bookId) {
         try {
             const response = await fetch(`http://localhost:8081/reviews/book/${bookId}`);
             const reviews = await response.json();
-            if (reviews.length === 0) return null;
+            if (reviews.length === 0) return { average: 0, count: 0 };
             const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
-            return (totalRating / reviews.length).toFixed(1);
+            return { average: (totalRating / reviews.length).toFixed(1), count: reviews.length };
         } catch (error) {
             console.error('Erro ao buscar avaliações:', error);
-            return null;
+            return { average: null, count: 0 };
         }
     }
 
-    function createStarRating(rating) {
+    function createStarRating(rating, count) {
         const starContainer = document.createElement('div');
         starContainer.className = 'star-rating';
-    
+
         if (rating === null) {
             starContainer.textContent = 'Sem avaliações';
             return starContainer;
         }
-    
+
         for (let i = 1; i <= 5; i++) {
             const star = document.createElement('span');
             star.className = 'star empty';
-    
+
             if (rating >= i) {
                 star.classList.add('filled');
                 star.innerHTML = '&#9733;';
@@ -188,13 +254,13 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             starContainer.appendChild(star);
         }
-    
+
         const ratingValue = document.createElement('span');
         ratingValue.className = 'rating-value';
-        ratingValue.textContent = ` ${rating}`;
-    
+        ratingValue.textContent = `${count}`;
+
         starContainer.appendChild(ratingValue);
-    
+
         return starContainer;
     }
 
@@ -216,21 +282,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    function debounce(func, wait) {
-        let timeout;
-        return function(...args) {
-            clearTimeout(timeout);
-            timeout = setTimeout(() => func.apply(this, args), wait);
-        };
-    }
-
     function handleError(error) {
         console.error('Erro ao buscar a lista de livros:', error);
         const bookList = document.getElementById('book-list');
         if (bookList) {
             bookList.innerHTML = `<div class="card"><p>Erro: ${error.message}</p></div>`;
         }
-    }    
+    }
 
     function fetchAllTags() {
         fetch(`${apiUrl}/all-tags`)
@@ -248,81 +306,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     createOrderBy();
-    // Chama a função fetchAllTags ao carregar a página
     fetchAllTags();
-    // Chama a função fetchPageableBooks ao carregar a página
     fetchPageableBooks(currentPage);
 });
 
-adminSection.style.display = 'none';
-
 if (token) {
-    logoutButton.style.display = 'block';
     loginButton.style.display = 'none';
     registerButton.style.display = 'none';
-    fetch('http://localhost:8081/auth/me', {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    })
-        .then(response => response.json())
-        .then(data => {
-            if (data.role === 'ROLE_ADMIN') {
-                adminSection.style.display = 'block';
-            } else {
-                adminSection.style.display = 'none';
-            }
-        })
-        .catch(error => {
-            console.error('Erro ao verificar o papel do usuário:', error);
-            adminSection.style.display = 'none';
-        });
-} else {
-    logoutButton.style.display = 'none';
-    profile.style.display = 'none';
 }
-
-logoutButton.addEventListener('click', function () {
-    if (token) {
-        localStorage.removeItem('token');
-        localStorage.removeItem('userId');
-        localStorage.removeItem('username');
-        window.location.href = 'index.html';
-    }
-});
-if (token) {
-    logoutButton.style.display = 'block';
-    loginButton.style.display = 'none';
-    registerButton.style.display = 'none';
-    fetch('http://localhost:8081/auth/me', {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    })
-        .then(response => response.json())
-        .then(data => {
-            if (data.role === 'ROLE_ADMIN') {
-                adminSection.style.display = 'block';
-            } else {
-                adminSection.style.display = 'none';
-            }
-        })
-        .catch(error => {
-            console.error('Erro ao verificar o papel do usuário:', error);
-            adminSection.style.display = 'none';
-        });
-} else {
-    logoutButton.style.display = 'none';
-    profile.style.display = 'none';
-}
-
-logoutButton.addEventListener('click', function () {
-    if (token) {
-        localStorage.removeItem('token');
-        localStorage.removeItem('userId');
-        localStorage.removeItem('username');
-        window.location.href = 'index.html';
-    }
-});

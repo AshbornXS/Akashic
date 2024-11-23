@@ -1,0 +1,284 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+/* Reset e configuração geral */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #e3e9f7;
+    overflow-y: auto;
+}
+
+main {
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+    padding-left: calc(82px + 20px);
+    flex-grow: 1;
+}
+
+/* Container e Card */
+.container {
+    text-align: left;
+    font-size: 0;
+    display: block;
+    width: 100%;
+    overflow: hidden;
+}
+
+.card {
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    background-image: linear-gradient(#333, #333);
+    transition: all .5s;
+    vertical-align: top;
+    margin: 10px;
+    text-align: center;
+}
+
+.card:hover {
+    background-image: linear-gradient(#533207d2, #1d1102a8);
+}
+
+.card .img {
+    width: 100%;
+    height: 200px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: all .5s;
+    transform-origin: center;
+}
+
+.card .img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform .5s ease;
+}
+
+.card:hover .img img {
+    transform: scale(1.2);
+}
+
+.card .content {
+    margin-top: 10px;
+    padding: 0px 20px;
+    height: 0;
+    opacity: 0;
+    transition: all .5s;
+    position: relative;
+    box-sizing: border-box;
+    overflow: hidden;
+    transform: translateY(30px);
+    text-align: center;
+}
+
+.card:hover .content {
+    height: 260px;
+    padding: 20px;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.card .content p {
+    margin: 0;
+}
+
+.card .content .title {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.card .content .desc {
+    font-size: 14px;
+    opacity: .8;
+    margin-top: 8px;
+}
+
+.card .arrow {
+    padding: 15px;
+    transform: rotate(-180deg);
+    transition: all .5s;
+}
+
+.card:hover .arrow {
+    transform: rotate(0);
+}
+
+.card .arrow span {
+    font-size: 24px;
+}
+
+.img {
+    width: 250px; 
+    height: 200px;
+    position: relative;
+    overflow: hidden;
+}
+
+.img img {
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover;
+    object-position: center;
+}
+
+.img-title {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); 
+    color: white;
+    font-size: 24px;
+    font-weight: 100;
+    font-style: italic;
+    text-transform: uppercase;
+    transition: all .5s;
+    z-index: 1; 
+}
+
+/* Estilo do link */
+.card .content a {
+    text-decoration: none;
+    color: inherit;        
+    font-weight: inherit;  
+    font-size: inherit;    
+}
+
+.card .content a:hover {
+    color: #ffffff;  
+}
+
+.centre {
+    width: 100%;
+    text-align: center;     
+}
+
+.titulo-centralizado {
+    color: #48330e;
+    display: inline-block;
+}
+
+/* Estilos do coração */
+.heart {
+    align-items: center;
+    justify-content: flex-start;
+    text-align: left;
+    font-size: 24px;
+    cursor: pointer;
+    color: gray;
+    transition: color 0.3s ease;
+}
+
+.heart.filled {
+    color: red;
+}
+
+.star-rating {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+}
+
+.rating-value {
+    font-size: 1rem; /* Tamanho da fonte */
+    color: #333; /* Cor do texto */
+    margin-left: 5px; /* Espaçamento à esquerda */
+    display: inline-block; /* Exibir como inline-block */
+}
+
+.star {
+    cursor: pointer;
+    font-size: 24px;
+    color: gray;
+    transition: color 0.3s;
+}
+
+.star.filled {
+    color: gold;
+}
+
+.star.half-filled {
+    color: gold;
+}
+
+#pagination-controls {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 0.5rem 1rem;
+    z-index: 1100;
+}
+
+#pagination-controls button {
+    padding: 0.5rem 1rem;
+    background-color: #5332077c;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+#pagination-controls button:hover {
+    background-color: #6b4f34;
+}
+
+#pagination-controls span {
+    font-weight: bold;
+    color: #5332077c;
+    font-size: 14px;
+}
+
+#books-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Espaçamento entre os itens */
+    justify-content: left; /* Centralizar os itens */
+    margin-left: 20px;
+}
+
+.container {
+    border-radius: 8px;
+    overflow: hidden;
+    width: 270px; /* Largura fixa para os itens */
+    text-align: center;
+}
+
+.container img {
+    width: 100%;
+    height: auto;
+    display: block;
+}

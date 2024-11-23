@@ -8,6 +8,8 @@ const editTagsSelect = document.getElementById('edit-tags');
 const newTagInput = document.getElementById('new-tag');
 const newEditTagInput = document.getElementById('new-edit-tag');
 
+const token = localStorage.getItem('token');
+
 const apiUrl = 'http://localhost:8081/books';
 
 addBookButton.addEventListener('submit', function (event) {
@@ -103,7 +105,7 @@ function addBook() {
         })
             .then(response => {
                 if (response.ok) {
-                    console.log('Livro adicionado com sucesso');
+                    alert('Livro adicionado com sucesso');
                     cleanFields();
                 } else {
                     return response.json().then(data => {
@@ -132,17 +134,17 @@ function editBook() {
                 if (imageData) {
                     let base64Image = imageData;
                     let mimeType = 'image/jpeg';
-            
+
                     const mimeMatch = imageData.match(/data:(.*);base64,/);
                     if (mimeMatch) {
                         mimeType = mimeMatch[1];
                     } else {
                         base64Image = `data:${mimeType};base64,${imageData}`;
                     }
-            
+
                     const blob = base64ToBlob(base64Image, mimeType);
                     const file = blobToFile(blob, imageName);
-            
+
                     const editImageInput = document.getElementById('edit-image');
                     const dataTransfer = new DataTransfer();
                     dataTransfer.items.add(file);
@@ -182,8 +184,6 @@ function editBook() {
                     const image = document.getElementById('edit-image').files[0];
                     const tags = Array.from(editTagsSelect.selectedOptions).map(option => option.value);
 
-                    console.log('Dados do formulário:', { id, title, author, description, image, tags });
-
                     if (title && author && description && tags.length) {
                         const formData = new FormData();
                         const bookPutRequestBody = {
@@ -196,12 +196,9 @@ function editBook() {
                             imageName: image ? image.name : imageName
                         };
 
-                        console.log('Dados do livro:', bookPutRequestBody);
 
                         formData.append('book', new Blob([JSON.stringify(bookPutRequestBody)], { type: 'application/json' }));
                         formData.append('image', image);
-
-                        console.log('FormData:', formData);
 
                         makeAuthenticatedRequest(`${apiUrl}/admin`, {
                             method: 'PUT',
@@ -228,20 +225,43 @@ function editBook() {
 }
 
 function deleteBook() {
+    const deleteForm = document.getElementById('deleteBookForm');
     const id = document.getElementById('delete-id').value;
+
     if (id) {
-        makeAuthenticatedRequest(`${apiUrl}/admin/${id}`, {
-            method: 'DELETE',
-        })
-            .then(response => {
-                if (response.ok) {
-                    console.log('Livro apagado com sucesso');
-                    cleanFields();
-                } else {
-                    console.error('Erro ao apagar o livro:', response.statusText);
-                }
+        fetch(`${apiUrl}/search?id=${id}`)
+            .then(response => response.json())
+            .then(book => {
+                document.getElementById('delete-title').textContent = book.title;
+                document.getElementById('delete-author').textContent = book.author;
+                document.getElementById('delete-desc').textContent = book.description;
+                document.getElementById('delete-tags').textContent = book.tags;
+
+                deleteForm.onreset = function () {
+                    document.getElementById('delete-title').textContent = "";
+                    document.getElementById('delete-author').textContent = "";
+                    document.getElementById('delete-desc').textContent = "";
+                    document.getElementById('delete-tags').textContent = "";
+                };
+
+                document.getElementById('confirm-delete').onclick = function () {
+                    makeAuthenticatedRequest(`${apiUrl}/admin/${id}`, {
+                        method: 'DELETE',
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                console.log('Livro apagado com sucesso');
+                                document.getElementById('delete-title').textContent = "";
+                                document.getElementById('delete-author').textContent = "";
+                                document.getElementById('delete-desc').textContent = "";
+                                document.getElementById('delete-tags').textContent = "";
+                            } else {
+                                console.error('Erro ao apagar o livro:', response.statusText);
+                            }
+                        })
+                        .catch(error => console.error('Erro ao apagar o livro:', error));
+                };
             })
-            .catch(error => console.error('Erro ao apagar o livro:', error));
     }
 }
 

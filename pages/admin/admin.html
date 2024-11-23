@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Admin</title>
+    <!-- css stylesheet -->
+    <link rel="stylesheet" href="/assets/css/admin.css">
+    <link rel="stylesheet" href="/assets/css/sidebar.css">
+    <!-- font awesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <!-- Barra Lateral -->
+    <nav id="sidebar">
+        <div id="sidebar_content">
+            <!-- Usuário -->
+            <div id="user">
+                <!-- Imagem de avatar do usuário -->
+                <img src="/assets/images/avatar.png" id="user-avatar" alt="Avatar">
+        
+                <!-- Informações do usuário -->
+                <p id="user-info">
+                    <!-- Nome do usuário -->
+                    <span class="item-description" id="username-sidebar">Nome</span>
+                    <!-- Outro dado do usuário como equipe ou status -->
+                    <span class="item-description" id="user-role-sidebar">Usuário</span>
+                </p>
+            </div>
+        
+            <!-- Lista de itens da barra lateral -->
+            <ul id="side_items">
+                <!-- Item do menu principal -->
+                <li class="side-item">
+                    <a href="/pages/index.html">
+                        <i class="fa-solid fa-book" style="color: #48330e;"></i>
+                        <span class="item-description">
+                            Loja
+                        </span>
+                    </a>
+                </li>
+        
+                <!-- Item da conta do usuário -->
+                <li class="side-item" id="profile">
+                    <a href="/pages/profile/profile.html">
+                        <i class="fa-solid fa-user" style="color: #48330e;"></i>
+                        <span class="item-description">
+                            Perfil
+                        </span>
+                    </a>
+                </li>
+        
+                <!-- Item de configurações -->
+                <li class="side-item" id="admin-section">
+                    <a href="/pages/admin/admin.html">
+                        <i class="fa-solid fa-gear" style="color: #48330e;"></i>
+                        <span class="item-description">
+                            Administração
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        
+            <!-- Botão para abrir ou fechar a barra lateral -->
+            <button id="open_btn" title="Abrir/Fechar Barra Lateral">
+                <i id="open_btn_icon" class="fa-solid fa-chevron-right"></i>
+            </button>
+        </div>
+        
+        <!-- Logout -->
+        <div id="logout_btn">
+            <button id="logout" title="Logout">
+                <i class="fa-solid fa-right-from-bracket" style="color: #48330e;"></i>
+            </button>
+        </div>
+    </nav>
+
+    <main>
+        <section id="add-book" class="admin-section">
+            <h2>Adicionar Livro</h2>
+            <form id="addBookForm" class="form">
+                <label for="add-title">Título:</label>
+                <input type="text" id="add-title" name="title">
+
+                <label for="add-author">Autor:</label>
+                <input type="text" id="add-author" name="author">
+
+                <label for="add-desc">Description:</label>
+                <textarea id="add-desc" name="description" placeholder="Descrição"></textarea>
+
+                <label for="add-tags">Tags:</label>
+                <select id="add-tags" name="tags" multiple></select>
+
+                <label for="new-tag">Nova Tag:</label>
+                <input type="text" id="new-tag" name="newTag" placeholder="Adicionar nova tag">
+                <button type="button" id="add-new-tag">Adicionar Tag</button>
+
+                <label for="add-image">Imagem:</label>
+                <input type="file" id="add-image" accept="image/*" placeholder="Selecione uma imagem" name="image">
+
+                <button type="submit">Adicionar Livro</button>
+            </form>
+        </section>
+
+        <section id="edit-book" class="admin-section">
+            <h2>Editar Livro</h2>
+            <form id="editBookForm" class="form">
+                <label for="edit-id">ID do Livro:</label>
+                <input type="text" id="edit-id" name="id" required>
+
+                <label for="edit-title">Novo Título:</label>
+                <input type="text" id="edit-title" name="title">
+
+                <label for="edit-author">Novo Autor:</label>
+                <input type="text" id="edit-author" name="author">
+
+                <label for="edit-desc">Description:</label>
+                <textarea id="edit-desc" name="description" placeholder="Descrição"></textarea>
+
+                <label for="edit-tags">Tags:</label>
+                <select id="edit-tags" name="tags" multiple></select>
+
+                <label for="new-edit-tag">Nova Tag:</label>
+                <input type="text" id="new-edit-tag" name="newEditTag" placeholder="Adicionar nova tag">
+                <button type="button" id="add-new-edit-tag">Adicionar Tag</button>
+
+                <label for="edit-image">Nova Imagem:</label>
+                <input type="file" id="edit-image" name="image">
+
+                <button type="submit">Editar Livro</button>
+            </form>
+        </section>
+
+        <section id="delete-book" class="admin-section">
+            <h2>Deletar Livro</h2>
+            <form id="deleteBookForm" class="form">
+                <label for="delete-id">ID do Livro:</label>
+                <input type="text" id="delete-id" name="id" required>
+
+                <label for="delete-title">Título:</label>
+                <label id="delete-title"></label>
+                <label for="delete-author">Autor:</label>
+                <label id="delete-author"></label>
+                <label for="delete-desc">Descrição:</label>
+                <label id="delete-desc"></label>
+                <label for="delete-tags">Tags:</label>
+                <label id="delete-tags"></label>
+
+                <button id="reset-delete" type="reset">Limpar</button>
+                <button id="confirm-delete" type="submit">Apagar Livro</button>
+            </form>
+        </section>
+        <button class="back-button" onclick="window.history.back()">Voltar</button>
+    </main>
+
+    <!-- js scripts -->
+    <script src="/assets/js/sidebar.js"></script>
+    <script src="admin.js"></script>
+</body>
+
+</html>

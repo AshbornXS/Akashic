@@ -1,0 +1,212 @@
+/* Importação de fontes */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap');
+
+/* Reset de estilos e fontes globais */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Estilos gerais do corpo da página */
+body {
+    line-height: 1.5;
+    background-color: #e3e9f7;
+    display: flex;
+    flex-direction: column; 
+    min-height: 100vh;
+}
+
+/* Estilo principal - conteúdo */
+main {
+    padding: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+/* Estilos do contêiner das cards */
+.card-wrapper {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 800px;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Estilos do contêiner das informações do usuário */
+#user-info {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 800px;
+    text-align: center;
+}
+
+#user-info h2 {
+    font-size: 1.5em;
+    color: #12263a;
+    margin-bottom: 15px;
+}
+
+/* Estilos do container da imagem de perfil */
+.profile-picture-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profile-picture-container img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+    border: 2px solid #5332077c;
+}
+
+.profile-picture-container input[type="file"] {
+    display: none;
+}
+
+#profile-picture-instruction {
+    color: #12263a;
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+/* Estilos do formulário de edição do perfil */
+#update-profile-form {
+    display: flex;
+    flex-direction: column; /* Altera a direção dos itens para coluna */
+    gap: 10px;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    display: none;;
+}
+
+#update-profile-form label,
+#update-profile-form input {
+    width: 100%; /* Garante que os elementos ocupem toda a largura disponível */
+}
+
+#update-profile-form label {
+    font-weight: 600;
+    color: #333;
+    font-size: 1.1em;
+}
+
+#update-profile-form input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+/* Estilos para o botão de ação */
+.profile-action-button {
+    background-color: #4caf50;
+    color: white;
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+.profile-action-button:hover {
+    background-color: #45a049;
+}
+
+/* Estilos para o botão de cancelamento */
+#cancel-update-button {
+    background-color: #f64749;
+    transition: background-color 0.3s ease;
+}
+
+#cancel-update-button:hover {
+    background-color: #e0353d;
+}
+
+/* Estilos para a seção de livros favoritos */
+#favorite-books {
+    margin-top: 30px;
+    width: 100%;
+    max-width: 800px;
+}
+
+#fav-books-title {
+    font-size: 1.2em;
+    color: #12263a;
+    margin-bottom: 15px;
+}
+
+#favorite-books-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+/* Estilo do botão de voltar */
+.back-button {
+    background-color: #f64749;
+    padding: 0.7rem 1.5rem;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.back-button:hover {
+    background-color: #d43f3b;
+}
+
+/* Estilo do botão de editar perfil */
+#edit-profile-button {
+    background-color: #5332077c;
+    padding: 0.7rem 1.5rem;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+#edit-profile-button:hover {
+    background-color: #48330e;
+}
+
+/* Estilos para os botões de navegação */
+.navigation-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* Media query para telas grandes */
+@media screen and (min-width: 992px) {
+    /* Ajuste de largura em telas maiores */
+    #user-info {
+        max-width: 800px;
+    }
+
+    #favorite-books {
+        max-width: 1100px;
+    }
+}

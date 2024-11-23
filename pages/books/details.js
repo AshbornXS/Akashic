@@ -54,10 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
             const userData = await response.json();
             const favorites = userData.fav || [];
-            console.log(favorites);
-            console.log(bookId);
             const isFavorite = favorites.includes(parseInt(bookId));
-            console.log(isFavorite);
             updateFavoriteIcon(isFavorite);
         } catch (error) {
             console.error('Erro ao verificar favoritos:', error);
@@ -98,25 +95,24 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     async function displayBookDetails(book) {
-        const bookDetailsDiv = document.getElementById('book-details');
+        const cover = document.getElementById('book-cover');
+        const title = document.getElementById('book-title');
+        const author = document.getElementById('book-author');
+        const description = document.getElementById('book-description');
+        const tagsContainer = document.getElementById('tags-container'); // Container para as tags
 
         const averageRating = await fetchAverageRating(book.id);
         const starRating = createAverageStarRating(averageRating);
 
-        bookDetailsDiv.innerHTML = `
-            <img src="data:image/jpeg;base64,${book.imageData}" alt="${book.title}">
-            <h1>${book.title}</h1>
-            <p>Autor: ${book.author}</p>
-            <p>Descrição: ${book.description}</p>
-            <div class="average-rating">
-                ${starRating.outerHTML}
-            </div>
-        `;
+        cover.src = `data:image/jpeg;base64,${book.imageData}`;
+        cover.alt = book.title;
+        title.textContent = book.title;
+        author.textContent = book.author;
+        description.textContent = book.description;
 
-        // Processar e exibir as tags em cards
-        const tagsContainer = document.createElement('div');
-        tagsContainer.classList.add('tags-container');
+        author.appendChild(starRating);
 
+        tagsContainer.innerHTML = ''; // Limpa o container de tags
         const tags = book.tags.split(',');
         tags.forEach(tag => {
             const tagCard = document.createElement('div');
@@ -124,8 +120,6 @@ document.addEventListener('DOMContentLoaded', function () {
             tagCard.textContent = tag.trim();
             tagsContainer.appendChild(tagCard);
         });
-
-        bookDetailsDiv.appendChild(tagsContainer);
     }
 
     async function fetchAverageRating(bookId) {
@@ -257,8 +251,6 @@ document.addEventListener('DOMContentLoaded', function () {
             comment: comment
         };
 
-        console.log('Dados da review:', review); // Log dos dados da review
-
         try {
             const response = await fetch('http://localhost:8081/reviews', {
                 method: 'POST',
@@ -267,8 +259,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 },
                 body: JSON.stringify(review)
             });
-
-            console.log('Resposta do servidor:', response); // Log da resposta do servidor
 
             if (response.ok) {
                 fetchReviews(bookId, userId);

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Readverse - Área do Cliente</title>
+    <!-- css stylesheet -->
+    <link rel="stylesheet" href="/assets/css/areaCliente.css">
+    <!-- font awesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+        integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <div class="main-container">
+        <div class="form-container">
+            <form id="loginForm" class="form">
+                <h1>Entrar</h1>
+                <input type="text" id="username-login" name="username" placeholder="Email" required>
+                <input type="password" id="password-login" name="password" placeholder="Senha" required>
+                <button type="submit" class="brown-btn">Entrar</button>
+            </form>
+            <form id="registerForm" class="form">
+                <h1>Cadastro</h1>
+                <input type="text" id="name" name="name" placeholder="Nome" required>
+                <input type="text" id="username-register" name="username" placeholder="Email" required>
+                <input type="password" id="password-register" name="password" placeholder="Senha" required>
+                <button type="submit" class="brown-btn">Cadastrar</button>
+            </form>
+        </div>
+
+        <div class="overlay-container">
+            <div class="overlay">
+                <h1 id="overlay-title">Bem-vindo!</h1>
+                <p id="overlay-text">Caso não tenha uma conta, clique no botão abaixo!</p>
+                <button id="toggleBtn" class="brown-outline-btn">Cadastrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- js scripts -->
+    <script src="areaCliente.js"></script>
+    <script src="auth.js"></script>
+</body>
+</html>

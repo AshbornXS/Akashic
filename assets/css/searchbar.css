@@ -1,0 +1,215 @@
+/* Barra de pesquisa */
+.search-container {
+    position: fixed; /* impede a barra de pesquisa de se mexer*/
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    width: 100%;
+    z-index: 1000;
+    padding-left: 10px;
+}
+
+/* Botão de voltar */
+.back-button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #5332077c;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: color 0.3s ease;
+    z-index: 1001;
+}
+
+.back-button:hover {
+    color: #48330e;
+}
+
+.search-bar {
+    position: sticky;
+    display: flex;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 4px 16px;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 700px;
+    height: 40px;
+    z-index: 1000;
+}
+
+.search-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #5332077c;
+    color: #fff;
+    cursor: pointer;
+}
+
+.search-input {
+    flex: 1;
+    border: none;
+    background-color: transparent;
+    margin-left: 8px;
+    font-size: 16px;
+    color: #333;
+    height: 24px;
+    z-index: 1000;
+}
+
+.search-input:focus {
+    outline: none;
+}
+
+.filter {
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    background-color: #f9f9f9;
+    padding: 4px 8px;
+    margin-left: 8px;
+    font-size: 14px;
+    color: #333;
+    height: 32px;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+.filter:focus {
+    outline: none;
+    border-color: #5332077c;
+}
+
+
+/* Barra de pesquisa */
+.search-container {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    width: 100%;
+    z-index: 1000;
+    padding-left: 10px;
+}
+
+/* Botão de voltar */
+.back-button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #5332077c;
+    cursor: pointer;
+    margin-right: 10px; 
+    z-index: 1001; 
+}
+
+.search-bar {
+    position: sticky;
+    display: flex;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 4px 16px;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 700px;
+    height: 40px;
+    z-index: 1000;
+}
+
+.search-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #5332077c;
+    color: #fff;
+    cursor: pointer;
+}
+
+.search-input {
+    flex: 1;
+    border: none;
+    background-color: transparent;
+    margin-left: 8px;
+    font-size: 16px;
+    color: #333;
+    height: 24px;
+    z-index: 1000;
+}
+
+.search-input:focus {
+    outline: none;
+}
+
+.filter {
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    background-color: #f9f9f9;
+    padding: 4px 8px;
+    margin-left: 8px;
+    font-size: 14px;
+    color: #333;
+    height: 32px;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+.filter:focus {
+    outline: none;
+    border-color: #5332077c;
+}
+
+/* Estilo individual para os botões */
+.auth-buttons { 
+    display: flex;       
+    align-items: center;        
+    position: fixed;           
+    top: 10px;                 
+    right: 10px;        
+    gap: 5px;
+    z-index: 1050;   
+}
+
+#login {
+    display: flex;
+    border: none;
+    align-items: center;
+    color: #333;
+    background-color: #fff;
+    border: 2px solid #5332077c;
+    cursor: pointer;
+    padding: 4px 16px;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    height: 40px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    text-decoration: none;
+}
+
+#register {
+    display: flex;
+    border: none;
+    align-items: center;
+    color: #333;
+    background-color: #fff;
+    border: 2px solid #5332077c;
+    cursor: pointer;
+    padding: 4px 16px;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    height: 40px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    text-decoration: none;
+}
+
+#login:hover, #register:hover {
+    color: #fff;
+    background-color: #48330e;
+}

@@ -1,0 +1,379 @@
+/* Importação de fontes */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+/* Reset de estilos e fontes globais */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Estilos gerais do corpo da página */
+body {
+    line-height: 1.5;
+    background-color: #e3e9f7;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: row;
+    transition: margin-left 0.5s ease;
+    overflow-y: auto;
+}
+
+/* Estilo principal - conteúdo */
+main {
+    padding: 20px;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+    overflow-y: auto;
+}
+
+
+/* Estilos gerais do corpo da página */
+body {
+    line-height: 1.5;
+    background-color: #e3e9f7;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: row;
+}
+
+
+/* Estilos do contêiner das cards */
+.card-wrapper {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 7rem;  
+}
+
+/* Estilos dos cards */
+.card {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+    width: 100%;
+    padding: 1rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+}
+
+/* Estilos da imagem do produto */
+.product-imgs {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.img-display {
+    position: relative;
+    width: 300px; /* Aumente o tamanho da imagem */
+    height: auto;
+}
+
+.img-display img {
+    width: 100%;
+    border-radius: 8px;
+}
+
+/* Estilos do conteúdo do produto */
+.product-content {
+    padding: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 1.5rem; /* Ajuste o espaçamento entre os elementos */
+}
+
+/* Estilos do título do produto */
+.product-title {
+    font-size: 2.5rem;
+    text-transform: capitalize;
+    font-weight: 700;
+    color: #12263a;
+    margin: 1rem 0;
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+.product-title::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 4px;
+    width: 80px;
+    background: #12263a;
+}
+
+/* Estilos do coração */
+.heart {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: left;
+    font-size: 24px;
+    cursor: pointer;
+    color: gray;
+    transition: color 0.3s ease;
+    
+}
+
+.heart.filled {
+    color: red;
+}
+
+
+/* Estilos dos detalhes do produto */
+.product-detail h2 {
+    text-transform: capitalize;
+    color: #12263a;
+    margin-bottom: 0.5rem;
+}
+
+.product-detail p {
+    font-size: 1rem;
+    padding: 0.5rem 0;
+    opacity: 0.8;
+}
+
+/* Estilos do formulário de avaliação */
+.review-form {
+    margin-top: 2rem;
+    padding: 1rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos dos elementos dentro do formulário de avaliação */
+#review-form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+#review-form .star-rating {
+    display: flex;
+    gap: 5px;
+}
+
+#review-form .star-rating .star {
+    cursor: pointer;
+    font-size: 24px;
+    color: gray;
+    transition: color 0.3s;
+}
+
+#review-form .star-rating .star.filled {
+    color: gold;
+}
+
+/* Estilos das estrelas da avaliação */
+.star {
+    font-size: 2rem;
+    color: #ffc107;
+    cursor: pointer;
+    margin-right: 0.2rem;
+}
+
+/* Estilos da área de texto */
+textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    resize: vertical;
+    margin-bottom: 1rem;
+}
+
+/* Estilos do botão review */
+.review-button {
+    background-color: #5332077c;
+    padding: 0.7rem 1.5rem;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.review-button:hover {
+    background-color: #48330e;
+}
+
+/* Estilos para a área de filtros */
+.filter-container {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Estilos dos filtros de ordenação e pesquisa */
+#sort-reviews, #filter-reviews {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    font-size: 1rem;
+}
+
+/* Estilos para a área de exibição de avaliações */
+#reviews-container {
+    margin-top: 2rem;
+}
+
+/* Estilos do botão de voltar */
+.order-button {
+    background-color: #5b4033;
+    color: white;
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 1rem;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+    margin-bottom: 15px;
+}
+
+.order-button:hover {
+    background-color: #48330e;
+}
+
+/* Estilo do item de revisão */
+.review-item {
+    background-color: #fff;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-size: 1rem;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+/* Cabeçalho da revisão */
+.review-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.review-rating {
+    display: flex;
+    gap: 5px;
+}
+
+.star {
+    font-size: 1.2rem;
+    color: #dcdcdc;
+}
+
+.star.filled {
+    color: #ffc107;
+}
+
+.review-user {
+    font-weight: bold;
+    color: #333;
+}
+
+/* Comentário */
+.review-comment {
+    font-size: 1rem;
+    color: #555;
+}
+
+/* Data da revisão */
+.review-date {
+    font-size: 0.9rem;
+    color: #888;
+}
+
+/* Botões de reação */
+.reaction-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 1rem;
+}
+
+.like-button, .dislike-button {
+    background-color: #f0f0f0;
+    border: none;
+    padding: 0.6rem 1rem;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.like-button:hover {
+    background-color: #d4edda;
+}
+
+.dislike-button:hover {
+    background-color: #f8d7da;
+}
+
+/* Ícones */
+.like-button:hover,
+.dislike-button:hover {
+    transform: scale(1.05);
+}
+
+/* Estilos para o container de tags */
+.tags-container {
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.tag-card {
+    background-color: #e3e9f7;
+    padding: 0.5rem 1rem;
+    border-radius: 15px;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+/* Media query para telas grandes */
+@media screen and (min-width: 992px) {
+    .card-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .card {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        grid-gap: 16px;
+    }
+
+    .product-imgs {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .product-content {
+        padding-top: 0;
+    }
+}
